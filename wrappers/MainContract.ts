@@ -9,14 +9,30 @@ import {
   contractAddress,
 } from "@ton/core";
 
+export type MainContractConfig = {
+  number: number;
+  address: Address;
+};
+
+export function mainContractConfigToCell(config: MainContractConfig): Cell {
+  return beginCell()
+    .storeUint(config.number, 32)
+    .storeAddress(config.address)
+    .endCell();
+}
+
 export class MainContract implements Contract {
   constructor(
     readonly address: Address,
     readonly init?: { code: Cell; data: Cell }
   ) {}
 
-  static createFromConfig(config: any, code: Cell, workchain = 0) {
-    const data = beginCell().endCell();
+  static createFromConfig(
+    config: MainContractConfig,
+    code: Cell,
+    workchain = 0
+  ) {
+    const data = mainContractConfigToCell(config);
     const init = { code, data };
     const address = contractAddress(workchain, init);
 

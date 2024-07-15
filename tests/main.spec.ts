@@ -9,8 +9,13 @@ describe("Main.fc Contract test", function () {
     const blockchain = await Blockchain.create();
     const codeCell = Cell.fromBoc(Buffer.from(hex, "hex"))[0];
 
+    const addy = await blockchain.treasury("sender");
+
     const theMainContract = blockchain.openContract(
-      MainContract.createFromConfig({}, codeCell)
+      MainContract.createFromConfig(
+        { number: 0, address: addy.address },
+        codeCell
+      )
     );
 
     const senderWallet = await blockchain.treasury("sender");

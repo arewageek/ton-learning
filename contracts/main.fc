@@ -15,12 +15,15 @@
         int counterValue = ds~load_uint(32);
         
         set_data(begin_cell().store_uint(counterValue + 1, 32).store_slice(sender).end_cell());
-    }
+    } 
 
 }
 
-slice get_latest_sender_address() method_id {
+(slice, int) get_latest_counter_data() method_id {
     slice ds = get_data().begin_parse();
 
-    return ds~load_msg_addr();
+    int latestCount = ds~load_uint(32);
+    slice latest_sender = ds~load_msg_addr();
+
+    return (slice, int);
 }
