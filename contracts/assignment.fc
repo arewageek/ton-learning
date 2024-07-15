@@ -1,0 +1,15 @@
+#include "./imports/stdlib.fc";
+
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+    slice cs = in_msg.begin_parse();
+
+    int flag = cs~load_uint(4);
+
+    slice sender = cs~load_msg_addr();
+
+    slice data = get_data(begin_cell()begin_parse())
+    int prevAmounts = data ~ load_uint
+    set_data(begin_cell().store_slice(data).end_cell());
+}
+
+;; slice get_total_

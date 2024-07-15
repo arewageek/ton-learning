@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import process from "process";
-import { Cell } from "ton-core";
+import { Cell } from "@ton/core";
 import { compileFunc } from "@ton-community/func-js";
 
 async function compileScript() {
