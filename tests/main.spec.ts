@@ -5,26 +5,25 @@ import { MainContract } from "../wrappers/MainContract";
 import "@ton/test-utils";
 
 describe("Main.fc Contract test", function () {
-  it("Should send a trx and get address of most recent sender", async () => {
+  it("Should successfully increase counter in contract and get address of the most recent sender", async () => {
     const blockchain = await Blockchain.create();
     const codeCell = Cell.fromBoc(Buffer.from(hex, "hex"))[0];
 
     const addy = await blockchain.treasury("sender");
 
     const theMainContract = blockchain.openContract(
-      MainContract.createFromConfig(
+      await MainContract.createFromConfig(
         { number: 0, address: addy.address },
         codeCell
       )
     );
 
     const senderWallet = await blockchain.treasury("sender");
-    const sendMessageResult = await theMainContract.sendInternalMessage(
+    const sendMessageResult = await theMainContract.sendIncrement(
       senderWallet.getSender(),
-      toNano("0.05")
+      toNano("0.05"),
+      1
     );
-
-    // console.log(sendMessageResult);
 
     expect(sendMessageResult.transactions).toHaveTransaction({
       from: senderWallet.address,

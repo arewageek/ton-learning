@@ -9,21 +9,20 @@
     int op = in_msg_body~load_uint(32);
 
     if(op == 1){
-        ;; counter logic will be placed here
 
-        slice ds = get_data()begin_parse();
-        int counterValue = ds~load_uint(32);
+        slice ds = get_data().begin_parse();
+        int input = ds~load_uint(32);
         
-        set_data(begin_cell().store_uint(counterValue + 1, 32).store_slice(sender).end_cell());
+        set_data(begin_cell().store_uint(input + 1, 32).store_slice(sender).end_cell());
     } 
 
 }
 
-(slice, int) get_latest_counter_data() method_id {
+(slice, int) get_latest_input_data() method_id {
     slice ds = get_data().begin_parse();
 
-    int latestCount = ds~load_uint(32);
+    int latestInput = ds~load_uint(32);
     slice latest_sender = ds~load_msg_addr();
 
-    return (slice, int);
+    return (latest_sender, latestInput);
 }

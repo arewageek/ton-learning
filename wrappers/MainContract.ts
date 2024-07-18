@@ -39,23 +39,30 @@ export class MainContract implements Contract {
     return new MainContract(address, init);
   }
 
-  async sendInternalMessage(
+  async sendIncrement(
     provider: ContractProvider,
     sender: Sender,
-    value: bigint
+    value: bigint,
+    incrementBy: number
   ) {
+    const msg_body = beginCell()
+      .storeUint(1, 32)
+      .storeUint(incrementBy, 32)
+      .endCell();
+
     await provider.internal(sender, {
       value,
       sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: beginCell().endCell(),
+      body: msg_body,
     });
   }
 
   async getData(provider: ContractProvider) {
-    const { stack } = await provider.get("get_latest_sender_address", []);
+    const { stack } = await provider.get("get_latest_input_data", []);
 
     return {
       latest_sender: stack.readAddress(),
+      current_counter_value: stack.readNumber(),
     };
   }
 }
